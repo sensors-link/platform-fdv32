@@ -1,0 +1,43 @@
+{
+  "name": "fdv32",
+  "title": "S-Link FDV32",
+  "version": "1.0.0",
+  "keywords": "risc-v, fdv32, sipeed, longan, arduino",
+  "description": "The S-Link FDV32 device is a 32-bit general-purpose microcontroller based on the RISC-V core with an impressive balance of processing power, reduced power consumption and peripheral set.",
+  "homepage": "https://www.sensors.link",
+  "license": "Apache-2.0",
+  "engines": {
+    "platformio": "<5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sensors-link/platform-fdv32.git"
+  },
+  "authors": [
+    {
+      "name": "S-Link",
+      "email": "support@sensors.link",
+      "url": "https://www.sensors.link"
+    }
+  ],
+  "packageRepositories": [
+    "https://dl.bintray.com/platformio/dl-packages/manifest.json",
+    "http://dl.platformio.org/packages/manifest.json"
+  ],
+  "frameworks": {
+    "arduino": {
+      "package": "framework-arduino-gd32v",
+      "script": "builder/frameworks/arduino.py"
+    }
+  },  
+  "packages": {
+    "tool-openocd-slink": {
+      "type": "uploader",
+      "version": "~0.1.1"
+    },
+    "toolchain-gd32v": {
+      "type": "toolchain",
+      "version": "~9.2.0"
+    }
+  }
+}

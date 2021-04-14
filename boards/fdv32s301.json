@@ -1,0 +1,12 @@
+{
+    "f_cpu": "16000000L",
+    "mcu": "FDV32S301",
+    "name": "FDV32S301",
+    "upload": {
+        "maximum_ram_size": 10240,
+        "maximum_size": 131072,
+        "protocol": "sipeed-rv-debugger"
+    },
+    "url": "https://www.sensors.link/",
+    "vendor": "S-Link"
+}
