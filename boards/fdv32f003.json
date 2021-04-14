@@ -6,10 +6,7 @@
         "maximum_ram_size": 2048,
         "maximum_size": 16384,
         "protocol": "sipeed-rv-debugger"
-    },  
-    "debug":{
-        "tools": "sipeed-rv-debugger"
-    },      
+    },       
     "url": "https://www.sensors.link/",
     "vendor": "S-Link"
 }

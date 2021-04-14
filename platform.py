@@ -20,15 +20,15 @@ class Fdv32Platform(PlatformBase):
         if "tools" not in debug:
             debug['tools'] = {}
 
-        upload_script = os.path.join(os.path.realpath('.'),'openocd.cfg')
-        if not os.path.exists(upload_script):
-            upload_script = os.path.join(os.path.dirname(__file__), "misc", board.id + ".openocd.cfg")
-        upload_script = upload_script.replace('\\','/')
+        debug_script = os.path.join(os.path.realpath('.'),'openocd.cfg')
+        if not os.path.exists(debug_script):
+            debug_script = os.path.join(os.path.dirname(__file__), "misc", board.id + ".openocd.cfg")
+        # upload_script = upload_script.replace('\\','/')
         server_args = [
-            "-f", upload_script
+            "-f", debug_script
         ]
 
-        debug['tools']["sipeed-rv-debugger"] = {
+        debug['tools']['sipeed-rv-debugger'] = {
             "server": {
                 "package": "tool-openocd-slink",
                 "executable": "bin/openocd",
