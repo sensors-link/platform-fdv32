@@ -1,7 +1,7 @@
 {
   "name": "fdv32",
   "title": "S-Link FDV32",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": "s-link, sensors-link, risc-v, fdv32",
   "description": "The S-Link FDV32 device is a 32-bit MCU/sensor SoC based on the S100 RISC-V core with an impressive balance of processing power, reduced power consumption and peripheral set.",
   "homepage": "https://www.sensors.link",
