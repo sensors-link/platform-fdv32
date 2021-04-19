@@ -27,3 +27,8 @@ int main() {
         DelayNus(1000000);
     }
 }
+
+void LPT_IrqHandler(void)
+{
+    LPTIM->INTSTS |= BIT(0); // 清中断标记
+}
