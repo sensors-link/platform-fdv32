@@ -1,6 +1,10 @@
 {
-    "f_cpu": "16000000L",
-    "mcu": "FDV32S302",
+    "build": {
+        "extra_flags": "-DFDV32S302",
+        "f_cpu": "16000000L",
+        "mcu": "FDV32S302"
+    },
+    "platforms": ["fdv32"],
     "name": "FDV32S302",
     "upload": {
         "maximum_ram_size": 4096,
