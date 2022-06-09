@@ -1,7 +1,7 @@
 {
   "name": "fdv32",
   "title": "S-Link FDV32",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "keywords": "s-link, sensors-link, risc-v, fdv32",
   "description": "The S-Link FDV32 device is a 32-bit MCU/sensor SoC based on the S100 RISC-V core with an impressive balance of processing power, reduced power consumption and peripheral set.",
   "homepage": "https://www.sensors.link",
@@ -27,13 +27,13 @@
   "frameworks": {
   },  
   "packages": {
-    "tool-openocd-slink": {
-      "type": "uploader",
-      "version": "~0.1.1"
-    },
     "toolchain-gd32v": {
       "type": "toolchain",
       "version": "~9.2.0"
+    },
+    "tool-openocd-slink": {
+      "type": "uploader",
+      "version": "https://hub.fastgit.xyz/sensors-link/riscv-openocd/releases/download/S-Link0.3/tool-openocd-slink.zip"
     }
   }
 }

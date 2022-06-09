@@ -4,14 +4,14 @@ ENTRY( _start )
 
 MEMORY
 {
-  flash (rxai!w) : ORIGIN = 0x10100000, LENGTH = 16K
-  ram (wxa!ri) : ORIGIN = 0x20000000, LENGTH = 2K
+  flash (rxai!w) : ORIGIN = 0x00002000, LENGTH = 16K
+  ram (wxa!ri) : ORIGIN = 0x0000B000, LENGTH = 2K
 }
 
 
 SECTIONS
 {
-  __stack_size = DEFINED(__stack_size) ? __stack_size : 512;
+  __stack_size = DEFINED(__stack_size) ? __stack_size : 256;
 
   .init           :
   {
@@ -60,7 +60,7 @@ SECTIONS
 
   .data          :
   {
-    PROVIDE( __global_pointer$ = . + 0x400 );
+    PROVIDE( __global_pointer$ = . + 0x200 );
     *(sram)
     *(.data .data.*)
     . = ALIGN(8);
