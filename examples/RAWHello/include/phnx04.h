@@ -1,15 +1,15 @@
 /**
- * @file phnx02.h
- * @author bifei.tang
+ * @file phnx04.h
+ * @author yongda.wang
  * @brief
  * @version 0.1
- * @date 2020-05-12
+ * @date 2021-06-15
  *
- * @copyright Fanhai Data Tech. (c) 2020
+ * @copyright Fanhai Data Tech. (c) 2021
  *
  */
-#ifndef _PHNX02_H
-#define _PHNX02_H
+#ifndef __PHNX04_H__
+#define __PHNX04_H__
 
 #define PLIC_BASE_ADDR 0xe0010000
 #define CLINT_BASE_ADDR 0xe0000000
@@ -24,36 +24,31 @@ extern "C" {
   <strong>IO Type Qualifiers</strong> are used
   \li to specify the access to peripheral variables.
   \li for automatic generation of peripheral register debug information.
-  */
+ */
 #ifdef __cplusplus
-#define __I volatile /*!< Defines 'read only' permissions                 */
+#define __I volatile /*!< Defines 'read only' permissions               */
 #else
 #define __I                                                                    \
     volatile const /*!< Defines 'read only' permissions                 */
 #endif
-#define __O volatile  /*!< Defines 'write only' permissions                */
-#define __IO volatile /*!< Defines 'read / write' permissions              */
+#define __O volatile  /*!< Defines 'write only' permissions             */
+#define __IO volatile /*!< Defines 'read / write' permissions           */
 
 /* define interrupt number */
 typedef enum IRQn {
-    /* ---------------------  Phonix02 Specific Interrupt Numbers ------------*/
-    RSV_IRQn = 0,    /*!< Reserved Interrupt						*/
-    PMU_IRQn = 1,    /*!< PMU Interrupt							*/
+    /* ---------------------  Phonix04 Specific Interrupt Numbers ------------*/
+    RSV_IRQn = 0,    /*!< Reserved Interrupt					*/
+    PMU_IRQn = 1,    /*!< PMU Interrupt						*/
     LPT_IRQn = 2,    /*!< LPT Interrupt						*/
     TIMER1_IRQn = 3, /*!< TIMER1 Interrupt					*/
-    TIMER2_IRQn = 4, /*!< TIMER2 Interrupt									*/
-    TIMER3_IRQn = 5, /*!< TIMER3 Interrupt									*/
-    TIMER4_IRQn = 6, /*!< TIMER4 Interrupt									*/
-    UART1_IRQn = 7,  /*!< UART1 Interrupt							*/
-    UART2_IRQn = 8,  /*!< UART2 Interrupt									*/
-    SPI_IRQn = 9,    /*!< SPI Interrupt									*/
-    ANAC_IRQn = 10,  /*!< ANAC Interrupt										*/
-    EFC_IRQn = 11,   /*!< EFC Interrupt										*/
+    TIMER2_IRQn = 4, /*!< TIMER2 Interrupt					*/
+    UART1_IRQn = 7,  /*!< UART1 Interrupt					*/
+    UART2_IRQn = 8,  /*!< UART2 Interrupt					*/
+    SPI_IRQn = 9,    /*!< SPI Interrupt						*/
+    ANAC_IRQn = 10,  /*!< ANAC Interrupt						*/
+    EFC_IRQn = 11,   /*!< EFC Interrupt						*/
     IOM_IRQn = 12,   /*!< IOM Interrupt						*/
-    I2C_IRQn = 13,   /*!< I2C Interrupt					*/
-    RTC_IRQn = 14,   /*!< RTC Interrupt						*/
     TWC_IRQn = 15,   /*!< TWC Interrupt						*/
-    LPU_IRQn = 16,   /*!< LPU Interrupt*/
 } IRQn_Type;
 
 /* ================================================================================*/
@@ -75,16 +70,11 @@ typedef struct /*!< EFC Structure          */
     __IO unsigned int TERASE; /*!< Erase time */
     __O unsigned int WPT;     /*!< Write Protect Register     */
     __IO unsigned int OPR;    /*!< OPR Flow Register    */
-    __I unsigned int PVEV;    /*!< Verify Register    */
+    __I unsigned int RSV;     /*!< reserve    */
     __IO unsigned int STS;    /*!< Verify Register    */
 } EFC_Type;
 
-typedef struct {
-    __I unsigned int Rsv[0x04 / 4];
-    __IO unsigned int CRC_RSL;
-    __I unsigned int RSV[0x80 / 4 - 2];
-    __IO unsigned int CRC_DAT;
-} CRC_Type;
+
 
 /* ================================================================================
  */
@@ -102,12 +92,47 @@ typedef struct /*!< SYSC Structure             */
     __O unsigned int WRPROCFG;   /*!< WRPROCFG   */
     __IO unsigned int CLKENCFG;
     __O unsigned int MSFTRSTCFG;
-    __IO unsigned int RSV[1];
+    __IO unsigned int RSV;
     __IO unsigned int TESTCKSEL;
     __IO unsigned int ANCLKDIV;
     __IO unsigned int TIMCLKDIV;
-    __IO unsigned int BZTIMCLKDIV;
 } SYSC_Type;
+
+
+typedef struct {
+    __IO unsigned int SCON;
+    __IO unsigned int SBUF;
+    __IO unsigned int SADDR;
+    __IO unsigned int SADEN;
+    __IO unsigned int ISR;
+    __IO unsigned int BDIV;
+} UART_Type;
+
+typedef struct {
+    __IO unsigned int CR0;
+    __IO unsigned int CSN;
+    __I unsigned int SR;
+    __IO unsigned int DR;
+} SPI_Type;
+
+typedef struct {
+    __IO unsigned int CR;
+    __IO unsigned int SWCR;
+    __IO unsigned int SWBR;
+    __IO unsigned int GAPW;
+    __IO unsigned int CMD1;
+    __IO unsigned int CMD2;
+    __IO unsigned int CMD3;
+    __IO unsigned int CMD4;
+    __IO unsigned int CMD5;
+    __IO unsigned int CMD6;
+    __I unsigned int RXD;
+    __IO unsigned int TXD;
+    __IO unsigned int TXS;
+    __IO unsigned int INTEN;
+    __IO unsigned int STS;
+    __I unsigned int DBG;
+} TWC_Type;
 
 /* ================================================================================
  */
@@ -144,88 +169,46 @@ typedef struct /*!< TIM0 Structure            */
     __IO unsigned int PWCON; /*!< TIMPWCON */
 } TIM_Type;
 
-/* ================================================================================
- */
-/* ================                       I2C ================ */
-/* ================================================================================
- */
-
-/**
- * @brief I2C Control (I2C)
- */
-
-typedef struct /*!< I2C Structure               */
-{
-    __IO unsigned int CON;     /*!< I2C_CON     */
-    __IO unsigned int ADDR;    /*!< I2C_ADDR    */
-    __IO unsigned int DATACMD; /*!< I2C_DATACMD */
-    __IO unsigned int SCLCR;   /*!< I2C_SCLCR     */
-    __IO unsigned int ISR;     /*!< I2C_ISR     */
-    __IO unsigned int TIMING;  /*!< I2C_TIMING  */
-} I2C_Type;
-
 typedef struct {
-    __IO unsigned int CR0;
-    __IO unsigned int CSN;
-    __I unsigned int SR;
-    __IO unsigned int DR;
-} SPI_Type;
-
-typedef struct {
-    __IO unsigned int SCON;
-    __IO unsigned int SBUF;
-    __IO unsigned int SADDR;
-    __IO unsigned int SADEN;
-    __IO unsigned int ISR;
-    __IO unsigned int BDIV;
-} UART_Type;
-
-typedef struct {
-    __IO unsigned int CR;
-    __IO unsigned int SWCR;
-    __IO unsigned int SWBR;
-    __IO unsigned int GAPW;
-    __IO unsigned int CMD1;
-    __IO unsigned int CMD2;
-    __IO unsigned int CMD3;
-    __IO unsigned int CMD4;
-    __I unsigned int RXD;
-    __IO unsigned int TXD;
-    __IO unsigned int TXS;
-    __IO unsigned int INTEN;
-    __IO unsigned int STS;
-    __I unsigned int DBG;
-} TWC_Type;
-
-typedef struct {
-    __IO unsigned int RSV[1];     // 00
-    __IO unsigned int LED_CFG;    // 04
-    __IO unsigned int PDSENS_CFG; // 08
-    __IO unsigned int DC_CFG;     // 0c
-    __IO unsigned int CMP_CFG;    // 10
-    __IO unsigned int ADC_CFG;    // 14
-    __IO unsigned int ADC_CTL;    // 18
-    __IO unsigned int ANAC_CFG;   // 1c
-    __IO unsigned int LVD_CFG;    // 20
-    __IO unsigned int CLK_CFG;    // 24
-    __IO unsigned int HRC_TRIM;   // 28
-    __IO unsigned int LRC_TRIM;   // 2c
-    __IO unsigned int CMP_TRIM;   // 30
-    __IO unsigned int BG4A_TRIM;  // 34
-    __IO unsigned int BG4S_TRIM;  // 38
-    __IO unsigned int TESTCTL;    // 3c
-    __IO unsigned int AINSEL;     // 40
-    __IO unsigned int MRC_TRIM;   // 44
-    __IO unsigned int DLY_CFG;    // 48
-    __IO unsigned int ME_CTL;     // 4c
-    __IO unsigned int ANAC_FLAG;  // 50
-    __IO unsigned int TEST;       // 54
-    __O unsigned int WPROT;       // 58
-    __IO unsigned int THR1_DATA;  // 5c
-    __IO unsigned int THR2_DATA;  // 60
-    __I unsigned int rsv0[7];
-    __IO unsigned int ADC_VAL[8]; // 80
-    __IO unsigned int AVG_VAL;    // A0
+    __IO unsigned int ANAC_CFG;       // 00
+    __IO unsigned int LED_CFG;        // 04
+    __IO unsigned int PDSENS_CFG;     // 08
+    __IO unsigned int CMP_CFG;        // 0C
+    __IO unsigned int ADC_CFG;        // 10
+    __IO unsigned int ADC_CTL;        // 14
+    __IO unsigned int LVD_CFG;        // 18
+    __IO unsigned int CLK_CFG;        // 1C
+    __IO unsigned int AINSEL;         // 20
+    __IO unsigned int DLY_CFG;        // 24
+    __IO unsigned int ME_CTL;         // 28
+    __IO unsigned int ANAC_FLAG;      // 2C
+    __IO unsigned int THR1_DATA;      // 30
+    __IO unsigned int THR2_DATA;      // 34
+    __IO unsigned int RSV;            // 38
+    __IO unsigned int WPROT;          // 3C
+    __IO unsigned int ADC_VAL[8];     // 40
+    __IO unsigned int AVG_VAL;        // 60
+    __IO unsigned int RSV7[7];        // 64 - 7C
+    __IO unsigned int HRC_TRIM_1M;    // 80
+    __IO unsigned int HRC_TRIM_2M;    // 84
+    __IO unsigned int HRC_TRIM_4M;    // 88
+    __IO unsigned int HRC_TRIM_8M;    // 8C
+    __IO unsigned int HRC_TRIM_16M;   // 90
+    __IO unsigned int LRC_TRIM;       // 94
+    __IO unsigned int MRC_TRIM;       // 98
+    __IO unsigned int CMP_TRIM;       // 9C
+    __IO unsigned int BG4A_TRIM;      // A0
+    __IO unsigned int BG4S_TRIM;      // A4
+    __IO unsigned int BG4A_OPTRIM;    // A8
+    __IO unsigned int VOLTREF_OPTRIM; // AC
+    __IO unsigned int NVR_OPTION0;    // B0
+    __IO unsigned int ANAC_REV0;      // B4
+    __IO unsigned int NVR_OPTION1;    // B8
+    __IO unsigned int NVR_OPTION2;    // BC
+    __IO unsigned int TESTCTL;        // C0
+    __IO unsigned int TEST;           // C4
+    __IO unsigned int EST_CFG;        // C8
+    __IO unsigned int EST_RAM_BIST;   // CC
 } ANAC_Type;
 
 typedef struct {
@@ -245,17 +228,6 @@ typedef struct {
     __IO unsigned int CTL;
 
 } IOM_Type;
-
-typedef struct {
-    __IO unsigned int CON;
-    __IO unsigned int STS;
-    __IO unsigned int TR;
-    __IO unsigned int DR;
-    __IO unsigned int ALM;
-    __IO unsigned int CALR;
-    __O unsigned int WPR;
-
-} RTC_Type;
 
 typedef struct {
     __IO unsigned int CR;
@@ -306,7 +278,6 @@ typedef enum { ERROR = 0, SUCCESS = !ERROR } ErrStatus;
     ((unsigned int)0x10100000UL) /*!< main FLASH base address          */
 #define SRAM_BASE                                                              \
     ((unsigned int)0x20000000UL) /*!< SRAM0 base address               */
-#define PAGE_BUFF_BASE 0x101c0000UL
 /* ================================================================================
  */
 /* ================              Peripheral memory map ================ */
@@ -314,22 +285,16 @@ typedef enum { ERROR = 0, SUCCESS = !ERROR } ErrStatus;
  */
 
 #define EFC_BASE 0x40000000UL
-#define CRC_BASE 0x40000c00UL
 #define SYSC_BASE 0x40001000UL
 #define TIMERS_BASE 0x400100A0UL
 #define TIM1_BASE 0x40010000UL
 #define TIM2_BASE 0x40010014UL
-#define TIM3_BASE 0x40010028UL
-#define TIM4_BASE 0x4001003CUL
-#define I2C_BASE 0x40010400UL
 #define SPI_BASE 0x40010800UL
-#define UART2_BASE 0x40010c00UL
 #define UART1_BASE 0x40011000UL
-#define LPUART_BASE 0x40011400UL
+#define UART2_BASE 0x40010c00UL
 #define TWC_BASE 0x40011800UL
 #define ANAC_BASE 0x40011c00UL
 #define IOM_BASE 0x40012400UL
-#define RTC_BASE 0x40012800UL
 #define PMU_BASE 0x40012c00UL
 #define LPTIM_BASE 0x40013000UL
 #define WDT_BASE 0x40013400UL
@@ -339,28 +304,22 @@ typedef enum { ERROR = 0, SUCCESS = !ERROR } ErrStatus;
 /* ================================================================================
  */
 #define EFC ((EFC_Type *)EFC_BASE)
-#define CRC ((CRC_Type *)CRC_BASE)
 #define SYSC ((SYSC_Type *)SYSC_BASE)
 #define TIMERS ((TIMERS_Type *)TIMERS_BASE)
 #define TIM1 ((TIM_Type *)TIM1_BASE)
 #define TIM2 ((TIM_Type *)TIM2_BASE)
-#define TIM3 ((TIM_Type *)TIM3_BASE)
-#define TIM4 ((TIM_Type *)TIM4_BASE)
-#define I2C ((I2C_Type *)I2C_BASE)
 #define SPI ((SPI_Type *)SPI_BASE)
 #define UART1 ((UART_Type *)UART1_BASE)
 #define UART2 ((UART_Type *)UART2_BASE)
-#define LPUART ((UART_Type *)LPUART_BASE)
 #define TWC ((TWC_Type *)TWC_BASE)
 #define ANAC ((ANAC_Type *)ANAC_BASE)
 #define IOM ((IOM_Type *)IOM_BASE)
-#define RTC ((RTC_Type *)RTC_BASE)
 #define PMU ((PMU_Type *)PMU_BASE)
 #define LPTIM ((LPTIM_Type *)LPTIM_BASE)
 #define WDT ((WDT_Type *)WDT_BASE)
 
 /** @} */ /* End of group Device_Peripheral_Registers */
-/** @} */ /* End of group Phonix02 */
+/** @} */ /* End of group Phonix04 */
 /** @} */ /* End of group FHSJDZ */
 
 // data type define
@@ -391,4 +350,4 @@ extern int __wrap_printf(const char *fmt, ...);
 }
 #endif
 
-#endif /* Phonix02_H */
+#endif /* __PHNX04_H__ */

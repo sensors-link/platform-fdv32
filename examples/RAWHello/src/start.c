@@ -7,7 +7,7 @@
  Description : RISCV entry file in C, for phoenix MCUs
  ============================================================================
  */
-#include "phnx02.h"
+#include "lib_include.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -45,9 +45,12 @@ void I2C_IrqHandler(void) __attribute__((weak, alias("STUB_IrqHandler")));
 void RTC_IrqHandler(void) __attribute__((weak, alias("STUB_IrqHandler")));
 void TWC_IrqHandler(void) __attribute__((weak, alias("STUB_IrqHandler")));
 void LPU_IrqHandler(void) __attribute__((weak, alias("STUB_IrqHandler")));
+void ADC_IrqHandler(void) __attribute__((weak, alias("STUB_IrqHandler")));
+void TIMER0_IrqHandler(void) __attribute__((weak, alias("STUB_IrqHandler")));
 
 /** 中断向量表 **/
 typedef void (*IRQ_FUNC)(void);
+#if (defined FDV32S301)|| (defined FDV32S302)
 const IRQ_FUNC _irq_vect[] = {
     STUB_IrqHandler,   //
     PMU_IrqHandler,    // PMU_IRQn = 1
@@ -67,6 +70,24 @@ const IRQ_FUNC _irq_vect[] = {
     TWC_IrqHandler,    // TWC_IRQn = 15
     LPU_IrqHandler,    // LPU_IRQn = 16
 };
+#elif defined FDV32F003
+const IRQ_FUNC _irq_vect[] = {
+    STUB_IrqHandler,   //
+    ADC_IrqHandler,    // ADC_IRQn = 1
+    LPT_IrqHandler,    // LPTIMER_IRQn = 2
+    TIMER0_IrqHandler, // TIMER0_IRQn = 3
+    TIMER1_IrqHandler, // TIMER1_IRQn = 4
+    TIMER2_IrqHandler, // TIMER2_IRQn = 5
+    TIMER3_IrqHandler, // TIMER3_IRQn = 6
+    TIMER4_IrqHandler, // TIMER4_IRQn = 7
+    UART1_IrqHandler,  // UART1_IRQn = 8
+    ANAC_IrqHandler,   // ANAC_IRQn = 9
+    EFC_IrqHandler,    // EFC_IRQn = 10
+    IOM_IrqHandler,    // IOM_IRQn = 11
+};
+#else
+#error "FDV32S301/FDV32S302/FDV32F003 should be defined!"
+#endif
 
 /**
  * @function: 中断处理函数
@@ -150,7 +171,8 @@ void _init(void) {
     SYSC->CLKENCFG |= BIT(12) | BIT(10); // ANAC_PCKEN = 1, IOM_PCKEN = 1
     ANAC->WPROT = 0X5A5A;
     ANAC->WPROT = 0XA5A5;
-    ANAC->CLK_CFG |= BIT(1) | BIT(15) | BIT(0); // HRC_EN = 1, MRC_EN = 1, LRC_EN = 1
+    ANAC->CLK_CFG |=
+        BIT(1) | BIT(15) | BIT(0); // HRC_EN = 1, MRC_EN = 1, LRC_EN = 1
     // 设置系统时钟
     ANAC->WPROT = 0X5A5A;
     ANAC->WPROT = 0XA5A5;

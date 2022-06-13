@@ -3,7 +3,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include "phnx02.h"
+#include "lib_include.h"
 
 static inline int _stub(int err) { return -1; }
 

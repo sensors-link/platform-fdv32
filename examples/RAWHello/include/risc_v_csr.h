@@ -64,8 +64,8 @@
 
 // mie
 #define MIE_MEIE (1 << 11) // ext int en
-// #define MIE_MTIE       (1<<7)   //tim int en
-#define MIE_MSIE (1 << 3) // soft int en
+#define MIE_MTIE (1 << 7)  // tim int en
+#define MIE_MSIE (1 << 3)  // soft int en
 
 // mip  (only read)
 #define MIP_MEIP (1 << 11) // ext int pend flag
@@ -127,11 +127,15 @@
 #define EnableExtIRQ() SET_CSR(mie, MIE_MEIE)
 #define DisableExtIRQ() CLEAR_CSR(mie, MIE_MEIE)
 
+#define EnableMtimeIRQ() SET_CSR(mie, MIE_MTIE)
+#define DisableMtimeIRQ() CLEAR_CSR(mie, MIE_MTIE)
+
 #define EnableSoftIRQ() SET_CSR(mie, MIE_MSIE)
 #define DisableSoftIRQ() CLEAR_CSR(mie, MIE_MSIE)
 
 // core plic
-#define PLIC_BASE_ADDR 0xe0010000
+// PLIC_BASE_ADDR defined in phnxXX.h, for compatibility of S301/S302/F003 SoCs
+// #define PLIC_BASE_ADDR 0xe0010000
 
 #define PLIC_SetPriority(src, val)                                             \
     {                                                                          \
@@ -154,9 +158,9 @@
 #define PLIC_SetCLAIM(src)                                                     \
     *((volatile unsigned int *)(PLIC_BASE_ADDR + 0x304)) = src // int completion
 
-//#endif
 // soft interrupt
-#define CLINT_BASE_ADDR 0xe0000000
+// PLIC_BASE_ADDR defined in phnxXX.h, for compatibility of S301/S302/F003 SoCs
+// #define CLINT_BASE_ADDR 0xe0000000
 #define SoftTrigIRQ() (REG32(CLINT_BASE_ADDR) = 1)
 #define SoftClrIRQ() (REG32(CLINT_BASE_ADDR) = 0)
 
